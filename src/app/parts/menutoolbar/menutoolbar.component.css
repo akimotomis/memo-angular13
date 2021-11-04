@@ -1,0 +1,22 @@
+.spacer {
+  flex: 1 1 auto;
+}
+h1 {
+  font-size: 20px;
+  color: white;
+  margin: 30;
+}
+/* Button */
+.button, button {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 0px;
+  font-size: 12px;
+  cursor: pointer;
+  background-color: #514fbe;
+  color: white;
+  border: none;
+}
+
+
