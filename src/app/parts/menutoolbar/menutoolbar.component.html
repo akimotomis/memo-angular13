@@ -1,17 +1,19 @@
 <mat-toolbar color="primary" class="mat-elevation-z24">
-  <button mat-icon-button color="accent" >
+  <button mat-mini-fab color="primary"  [matMenuTriggerFor]="menuList" >
     <mat-icon>menu</mat-icon>
   </button>
-  <a [routerLink]="['/']"></a>
-  <h1>My Memo</h1>
+  <a [routerLink]="['/']" style="text-decoration:none;">
+    <h1>My Memo</h1>
+  </a>
   <span class="spacer"></span>
+  <mat-divider></mat-divider>
   <button mat-icon-button>
     <mat-icon>favorite</mat-icon>
   </button>
-  <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
     <mat-icon>share</mat-icon>
-  </button> -->
-  <mat-menu #menu="matMenu">
+  </button>
+  <mat-menu #menuList="matMenu">
     <button mat-menu-item>
       <mat-icon>dialpad</mat-icon>
       <span>Redial</span>

@@ -11,7 +11,7 @@ import { MenutoolbarComponent } from './parts/menutoolbar/menutoolbar.component'
 import { TaskDetailComponent } from './page/task-detail/task-detail.component';
 
 import { HttpClientModule } from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+// import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './service/in-memory-data.service';
 
 @NgModule({
@@ -25,9 +25,9 @@ import { InMemoryDataService } from './service/in-memory-data.service';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule,
+    MaterialModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

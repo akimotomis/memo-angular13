@@ -3,29 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "memo-angular12": {
+    "memo-Angular13": {
       "projectType": "application",
       "schematics": {
-        "@schematics/angular:class": {
-          "skipTests": true
-        },
         "@schematics/angular:component": {
-          "skipTests": true
-        },
-        "@schematics/angular:directive": {
-          "skipTests": true
-        },
-        "@schematics/angular:guard": {
-          "skipTests": true
-        },
-        "@schematics/angular:interceptor": {
-          "skipTests": true
-        },
-        "@schematics/angular:pipe": {
-          "skipTests": true
-        },
-        "@schematics/angular:service": {
-          "skipTests": true
+          "style": "scss"
         },
         "@schematics/angular:application": {
           "strict": true
@@ -38,18 +20,19 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/memo-angular12",
+            "outputPath": "dist/memo-Angular13",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
+              "src/theme.scss",
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -90,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "memo-angular12:build:production"
+              "browserTarget": "memo-Angular13:build:production"
             },
             "development": {
-              "browserTarget": "memo-angular12:build:development"
+              "browserTarget": "memo-Angular13:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -101,7 +84,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "memo-angular12:build"
+            "browserTarget": "memo-Angular13:build"
           }
         },
         "test": {
@@ -111,13 +94,14 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
+            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
+              "src/theme.scss",
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -125,5 +109,5 @@
       }
     }
   },
-  "defaultProject": "memo-angular12"
+  "defaultProject": "memo-Angular13"
 }
