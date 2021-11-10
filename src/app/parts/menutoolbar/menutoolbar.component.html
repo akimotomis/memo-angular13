@@ -22,9 +22,11 @@
       <mat-icon>voicemail</mat-icon>
       <span>Check voice mail</span>
     </button>
-    <button mat-menu-item>
-      <mat-icon>notifications_off</mat-icon>
-      <span>Disable alerts</span>
-    </button>
+    <a [routerLink]="['/list']">
+      <button mat-menu-item>
+        <mat-icon>notifications_off</mat-icon>
+        <span>List</span>
+      </button>
+      </a>
   </mat-menu>
 </mat-toolbar>

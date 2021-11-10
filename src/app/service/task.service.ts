@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task } from '../task';
+import { Task } from '../model/task';
 
 import { Observable, Observer, ReplaySubject, Subject, observable } from 'rxjs';
 import { take } from 'rxjs/operators';
