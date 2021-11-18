@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 // import { InMemoryDbService } from 'angular-in-memory-web-api';
-import { Task } from '../model/task';
+import { TaskListItem } from '../model/task';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class InMemoryDataService {
     return { tasks }
   }
 
-  genID(tasks: Task[]): number {
+  genID(tasks: TaskListItem[]): number {
     return tasks.length > 0 ? Math.max(...tasks.map(task => task.id)) + 1 : 11;
   }
  }

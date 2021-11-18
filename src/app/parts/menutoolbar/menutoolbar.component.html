@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="mat-elevation-z24">
-  <button mat-mini-fab color="primary"  [matMenuTriggerFor]="menuList" >
+  <button mat-mini-fab color="primary" [matMenuTriggerFor]="menuList">
     <mat-icon>menu</mat-icon>
   </button>
   <a [routerLink]="['/']" style="text-decoration:none;">
@@ -22,11 +22,18 @@
       <mat-icon>voicemail</mat-icon>
       <span>Check voice mail</span>
     </button>
-    <a [routerLink]="['/list']">
+    <a [routerLink]="['/memolist']" style="text-decoration:none;">
       <button mat-menu-item>
-        <mat-icon>notifications_off</mat-icon>
-        <span>List</span>
+        <mat-icon>list</mat-icon>
+        <span>Memo List</span>
       </button>
-      </a>
+    </a>
+    <a [routerLink]="['/tasklist']" style="text-decoration:none;">
+      <button mat-menu-item>
+        <!-- <mat-icon>notifications_off</mat-icon> -->
+        <mat-icon>view_list</mat-icon>
+        <span>Task List</span>
+      </button>
+    </a>
   </mat-menu>
 </mat-toolbar>

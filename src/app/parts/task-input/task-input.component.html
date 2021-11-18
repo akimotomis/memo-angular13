@@ -1,0 +1,12 @@
+<mat-form-field appearance="fill">
+  <mat-label>
+    <mat-icon class="input-iconcolor">favorite</mat-icon>Title Input
+  </mat-label>
+  <input matInput [ngModel]="inText" (ngModelChange)="onNgModelChange($event); inText = $event"
+  (keyup)="onKeyUp($event)" #inputText>
+</mat-form-field>
+  <!-- (keydown.enter)="onKeyDown($event)" #inputText> -->
+
+<button mat-raised-button color="accent"
+ [disabled]="isButtonDisabled"
+ (click)="onButtonClick()">追加</button>

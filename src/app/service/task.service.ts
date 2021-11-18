@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Task } from '../model/task';
+import { TaskListItem } from '../model/task';
+import { TaskAddItem } from '../model/task';
 
 import { Observable, Observer, ReplaySubject, Subject, observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -19,8 +20,12 @@ export class TaskService {
     name: 'tasks',
     storeOptions: { keyPath: 'id', autoIncrement: true },
     indexes: [
-      { indexName: 'comment', unique: false },
-      { indexName: 'status', unique: false }
+      // { indexName: 'comment', unique: false },
+      { indexName: 'status', unique: false },
+      { indexName: 'title', unique: false },
+      { indexName: 'content', unique: false },
+      { indexName: 'createdAt', unique: false },
+      { indexName: 'updatedAt', unique: false }
     ]
   }
   constructor() {
@@ -62,7 +67,7 @@ export class TaskService {
         ).subscribe(db => {
           const transaction = db.transaction(this.storeSettings.name, "readonly")
           const objectStore = transaction.objectStore(this.storeSettings.name)
-          let request
+          let request;
 
           if (id) {
             request = objectStore.get(parseInt(id))
@@ -84,7 +89,7 @@ export class TaskService {
   }
 
   /** task追加 */
-  post(task: Task): Observable<number> {
+  post(task: TaskAddItem): Observable<number> {
     return new Observable((observer: Observer<number>) => {
       try {
         this.db.pipe(
@@ -108,8 +113,8 @@ export class TaskService {
   }
 
   /** task更新 */
-  put(task: Task): Observable<Task> {
-    return new Observable((observer: Observer<Task>) => {
+  put(task: TaskListItem): Observable<TaskListItem> {
+    return new Observable((observer: Observer<TaskListItem>) => {
       try {
         this.db.pipe(
           take(1)
