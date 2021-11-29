@@ -16,12 +16,12 @@ import { merge, tap } from 'rxjs';
 export class TaskListComponent implements OnInit, AfterViewInit {
 
   dataSource!: TaskListDataSource
-  displayedColumns = ['id', 'title', 'updatedAt']
+  displayedColumns = ['id', 'title', 'updatedAt','createdAt', 'delbtn']
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   // @ViewChild(MatTable) table!: MatTable<TaskListItem>;
-
+  selectedrow: number = 0;
   /** */
   // allTasks: TaskListItem[] = []
   statusName: string = 'all'
@@ -84,8 +84,12 @@ export class TaskListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  addTask(inText: string): void {
+  onAdd(inText: string): void {
     this.isButtonDisabled = true
     this.dataSource.add(inText)
+  }
+
+  onDelete(id: number): void {
+    this.dataSource.del(id)
   }
 }

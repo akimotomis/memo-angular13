@@ -23,17 +23,19 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 
 import { MenutoolbarComponent } from './parts/menutoolbar/menutoolbar.component';
+import { MenupageComponent } from './parts/menupagelink/menupage.component';
 import { DashboardComponent } from './page/dashboard/dashboard.component';
 import { TaskListComponent } from './page/task-list/task-list.component';
+import { TaskInputComponent } from './parts/task-input/task-input.component'
 import { TaskDetailComponent } from './page/task-detail/task-detail.component';
 import { MemoListComponent } from './page/memo-list/memo-list.component';
-import { TaskInputComponent } from './parts/task-input/task-input.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     MenutoolbarComponent,
+    MenupageComponent,
     TaskDetailComponent,
     MemoListComponent,
     TaskListComponent,

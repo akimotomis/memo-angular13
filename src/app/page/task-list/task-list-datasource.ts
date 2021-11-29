@@ -42,25 +42,6 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
     // super();
   }
 
-  /**
-   * 全データをロードする
-   *
-   * @memberof TaskListDataSource
-   */
-  load(): void {
-    this.loadingSubject.next(true);
-
-    this.taskServise.get().pipe(
-      catchError(() => of([])),
-      finalize(() => this.loadingSubject.next(false))
-    )
-      .subscribe(tasks => {
-         this.subject.next(tasks)
-         this.data = tasks
-        });
-    // .subscribe(tasks => { this.data = tasks });
-  }
-
   connect(collectionViewer: CollectionViewer): Observable<TaskListItem[]> {
     console.log("Connecting data source");
     return this.subject.asObservable();
@@ -71,14 +52,67 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
     this.loadingSubject.complete();
   }
 
+  /**
+   * 全データをロードする
+   *
+   * @memberof TaskListDataSource
+   */
+  load(): void {
+    this.loadingSubject.next(true);
+
+    this.taskServise.get()
+      .pipe(
+        catchError(() => of([])),
+        finalize(() => this.loadingSubject.next(false))
+      )
+      .subscribe(tasks => {
+        this.data = tasks
+        this.subject.next(this.data)
+      });
+    // .subscribe(tasks => { this.data = tasks });
+  }
+
+  /**
+   * データを追加する
+   *
+   * @param {string} title
+   * @memberof TaskListDataSource
+   */
   add(title: string): void {
     let addItem: TaskAddItem = DEFAULT_ADD
     addItem.title = title
+    addItem.createdAt = new Date().toLocaleString()
+    addItem.updatedAt = addItem.createdAt
     Object.assign(DEFAUL_LIST, addItem)
+
     this.taskServise.post(addItem).subscribe(id => {
       DEFAUL_LIST.id = id
       this.data.push(DEFAUL_LIST)
+      this.subject.next(this.data)
     })
+  }
+
+  /**
+   * データを削除する
+   *
+   * @param {number} id
+   * @memberof TaskListDataSource
+   */
+  del(id: number): void {
+    this.taskServise.delete(id).subscribe(
+      (v) => {
+        this.data = this.data.filter(v => v.id !== id)
+        this.subject.next(this.data)
+      })
+  }
+
+  /**
+   * データベースをリセットする（deleteDatabase削除＋location.reload()再接続）
+   *
+   * @memberof TaskListDataSource
+   */
+  resetDB(): void {
+    this.taskServise.deleteDB().subscribe()
   }
 
   /**
@@ -88,7 +122,7 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
   getPage(paginator: MatPaginator, sort: MatSort): void {
     this.paginator = paginator;
     this.sort = sort;
-    this.data= this.getPagedData(this.getSortedData([...this.data]));
+    this.data = this.getPagedData(this.getSortedData([...this.data]));
     this.subject.next(this.data);
 
   }

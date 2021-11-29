@@ -1,7 +1,5 @@
 <mat-toolbar color="primary" class="mat-elevation-z24">
-  <button mat-mini-fab color="primary" [matMenuTriggerFor]="menuList">
-    <mat-icon>menu</mat-icon>
-  </button>
+  <app-menupage></app-menupage>
   <a [routerLink]="['/']" style="text-decoration:none;">
     <h1>My Memo</h1>
   </a>
@@ -13,27 +11,4 @@
   <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
     <mat-icon>share</mat-icon>
   </button>
-  <mat-menu #menuList="matMenu">
-    <button mat-menu-item>
-      <mat-icon>dialpad</mat-icon>
-      <span>Redial</span>
-    </button>
-    <button mat-menu-item disabled>
-      <mat-icon>voicemail</mat-icon>
-      <span>Check voice mail</span>
-    </button>
-    <a [routerLink]="['/memolist']" style="text-decoration:none;">
-      <button mat-menu-item>
-        <mat-icon>list</mat-icon>
-        <span>Memo List</span>
-      </button>
-    </a>
-    <a [routerLink]="['/tasklist']" style="text-decoration:none;">
-      <button mat-menu-item>
-        <!-- <mat-icon>notifications_off</mat-icon> -->
-        <mat-icon>view_list</mat-icon>
-        <span>Task List</span>
-      </button>
-    </a>
-  </mat-menu>
 </mat-toolbar>
