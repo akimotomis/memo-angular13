@@ -1,14 +1,10 @@
 <mat-toolbar color="primary" class="mat-elevation-z24">
   <app-menupage></app-menupage>
+  <mat-divider></mat-divider>
   <a [routerLink]="['/']" style="text-decoration:none;">
     <h1>My Memo</h1>
   </a>
   <span class="spacer"></span>
   <mat-divider></mat-divider>
-  <button mat-icon-button>
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
+  <app-menusetting></app-menusetting>
 </mat-toolbar>

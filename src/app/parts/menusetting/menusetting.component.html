@@ -1,0 +1,16 @@
+<button mat-mini-fab color="primary" [matMenuTriggerFor]="menuList">
+  <mat-icon>share</mat-icon>
+</button>
+
+<mat-menu #menuList="matMenu">
+  <button mat-menu-item disabled>
+    <mat-icon>favorite</mat-icon>
+  </button>
+  <button mat-menu-item disabled>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <button mat-menu-item (click)="onResetButtonClick()">
+    <mat-icon>clear_all</mat-icon>
+    <span>reset_indexedDB</span>
+  </button>
+</mat-menu>

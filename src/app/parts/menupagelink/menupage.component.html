@@ -10,18 +10,13 @@
     <mat-icon>voicemail</mat-icon>
     <span>Check voice mail</span>
   </button>
-  <a [routerLink]="['/memolist']" style="text-decoration:none;">
-    <button mat-menu-item>
-      <mat-icon>list</mat-icon>
-      <span>Memo List</span>
-    </button>
-  </a>
-  <a [routerLink]="['/tasklist']" style="text-decoration:none;">
-    <button mat-menu-item>
-      <!-- <mat-icon>notifications_off</mat-icon> -->
-      <mat-icon>view_list</mat-icon>
-      <span>Task List</span>
-    </button>
-  </a>
+  <button mat-menu-item [routerLink]="['/memolist']">
+    <mat-icon>list</mat-icon>
+    <span>Memo List</span>
+  </button>
+  <button mat-menu-item [routerLink]="['/tasklist']">
+    <!-- <mat-icon>notifications_off</mat-icon> -->
+    <mat-icon>view_list</mat-icon>
+    <span>Task List</span>
+  </button>
 </mat-menu>
-

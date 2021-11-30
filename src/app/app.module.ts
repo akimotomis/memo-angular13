@@ -24,6 +24,7 @@ import { MatSortModule } from '@angular/material/sort';
 
 import { MenutoolbarComponent } from './parts/menutoolbar/menutoolbar.component';
 import { MenupageComponent } from './parts/menupagelink/menupage.component';
+import { MenusettingComponent } from './parts/menusetting/menusetting.component';
 import { DashboardComponent } from './page/dashboard/dashboard.component';
 import { TaskListComponent } from './page/task-list/task-list.component';
 import { TaskInputComponent } from './parts/task-input/task-input.component'
@@ -36,6 +37,7 @@ import { MemoListComponent } from './page/memo-list/memo-list.component';
     DashboardComponent,
     MenutoolbarComponent,
     MenupageComponent,
+    MenusettingComponent,
     TaskDetailComponent,
     MemoListComponent,
     TaskListComponent,
