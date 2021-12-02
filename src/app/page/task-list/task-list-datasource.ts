@@ -5,23 +5,6 @@ import { MatSort } from '@angular/material/sort';
 import { catchError, finalize, map, tap } from 'rxjs/operators';
 import { Observable, of as observableOf, merge, BehaviorSubject, of } from 'rxjs';
 import { TaskListItem } from './../../model/task';
-import { TaskAddItem } from './../../model/task';
-
-const DEFAULT_ADD: TaskAddItem = {
-  status: '',
-  title: '',
-  content: '',
-  createdAt: '',
-  updatedAt: ''
-}
-const DEFAUL_LIST: TaskListItem = {
-  id: 0,
-  status: '',
-  title: '',
-  content: '',
-  createdAt: '',
-  updatedAt: ''
-}
 
 /**
  * TaskListビューのデータソース
@@ -79,17 +62,24 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
    * @memberof TaskListDataSource
    */
   add(title: string): void {
-    let addItem: TaskAddItem = DEFAULT_ADD
+    let addItem = {} as TaskListItem
     addItem.title = title
     addItem.createdAt = new Date().toLocaleString()
     addItem.updatedAt = addItem.createdAt
-    Object.assign(DEFAUL_LIST, addItem)
 
-    this.taskServise.post(addItem).subscribe(id => {
-      DEFAUL_LIST.id = id
-      this.data.push(DEFAUL_LIST)
-      this.subject.next(this.data)
-    })
+    this.taskServise.post(addItem).subscribe(
+      (id) => {
+        addItem.id = id
+        this.data.push(addItem)
+        this.subject.next(this.data)
+      }
+    )
+
+    // this.taskServise.post(addItem).subscribe(id => {
+    //   DEFAUL_LIST.id = id
+    //   this.data.push(DEFAUL_LIST)
+    //   this.subject.next(this.data)
+    // })
   }
 
   /**
@@ -149,6 +139,7 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
         case 'updatedAt': return compare(a.updatedAt, b.updatedAt, isAsc);
+        case 'createdAt': return compare(a.createdAt, b.createdAt, isAsc);
         case 'title': return compare(a.title, b.title, isAsc);
         case 'id': return compare(+a.id, +b.id, isAsc);
         default: return 0;

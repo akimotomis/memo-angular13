@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { TaskListItem } from '../model/task';
-import { TaskAddItem } from '../model/task';
 
 import { Observable, Observer, ReplaySubject, Subject, observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -89,7 +88,7 @@ export class TaskService {
   }
 
   /** task追加 */
-  post(task: TaskAddItem): Observable<number> {
+  post(task: TaskListItem): Observable<number> {
     return new Observable((observer: Observer<number>) => {
       try {
         this.db.pipe(
