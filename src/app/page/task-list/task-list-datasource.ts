@@ -112,8 +112,8 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
   getPage(paginator: MatPaginator, sort: MatSort): void {
     this.paginator = paginator;
     this.sort = sort;
-    this.data = this.getPagedData(this.getSortedData([...this.data]));
-    this.subject.next(this.data);
+    // this.data = this.getPagedData(this.getSortedData([...this.data]));
+    this.subject.next(this.getPagedData(this.getSortedData([...this.data])));
 
   }
 
