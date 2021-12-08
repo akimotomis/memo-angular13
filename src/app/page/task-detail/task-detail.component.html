@@ -1,3 +1,13 @@
-<p>
-task-detail works!
-</p>
+<form [formGroup]="editForm" (ngSubmit)="onSave(editForm.value)">
+  <button class="button" type="reset" (click)="goBack()">back</button>
+  <button class="button" type="submit">SAVE</button>
+  <div class="details-container">
+    <mat-form-field>
+      <input matInput type="text" formControlName="title" placeholder="Title">
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput matTextareaAutosize  minRows="6" placeholder="content"
+        formControlName="content"></textarea>
+    </mat-form-field>
+  </div>
+</form>

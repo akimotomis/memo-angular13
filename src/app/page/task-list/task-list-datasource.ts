@@ -41,6 +41,15 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
    * @memberof TaskListDataSource
    */
   load(): void {
+    // detailからの戻りの場合、編集対象のIDでListを復元する
+    if (this.taskServise.EditId) {
+      console.log('selectedrow::' + this.taskServise.EditId)
+      this.data = this.taskServise.Data
+      this.subject.next(this.data)
+      this.taskServise.EditId = ''
+      return
+    }
+
     this.loadingSubject.next(true);
 
     this.taskServise.get()
@@ -112,7 +121,6 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
   getPage(paginator: MatPaginator, sort: MatSort): void {
     this.paginator = paginator;
     this.sort = sort;
-    // this.data = this.getPagedData(this.getSortedData([...this.data]));
     this.subject.next(this.getPagedData(this.getSortedData([...this.data])));
 
   }

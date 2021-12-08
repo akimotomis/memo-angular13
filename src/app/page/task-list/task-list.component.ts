@@ -16,14 +16,13 @@ import { merge, tap } from 'rxjs';
 export class TaskListComponent implements OnInit, AfterViewInit {
 
   dataSource!: TaskListDataSource
-  displayedColumns = ['id', 'title', 'updatedAt','createdAt', 'delbtn']
+  displayedColumns = ['id', 'title', 'updatedAt', 'createdAt', 'delbtn']
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  // @ViewChild(MatTable) table!: MatTable<TaskListItem>;
-  selectedrow: number = 0;
-  /** */
-  // allTasks: TaskListItem[] = []
+  @ViewChild(MatPaginator) paginator!: MatPaginator
+  @ViewChild(MatSort) sort!: MatSort
+  // @ViewChild(MatTable) table!: MatTable<TaskListItem>
+  selectedrow: number = 0
+
   statusName: string = 'all'
   statusList = [
     { name: 'all', status: true },
@@ -45,12 +44,11 @@ export class TaskListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.dataSource = new TaskListDataSource(this.taskService);
+    // Before render
+    this.dataSource = new TaskListDataSource(this.taskService)
+    this.selectedrow = this.taskService.EditId
     this.dataSource.load()
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-
-  }
+}
   /**
    * コンポーネントのビューを完全に初期化した後に呼び出されるライフサイクルフック。
    *
@@ -66,9 +64,13 @@ export class TaskListComponent implements OnInit, AfterViewInit {
       .pipe(
         tap(() => this.dataSource.getPage(this.paginator, this.sort))
       )
-      .subscribe();
+      .subscribe(
+        () => {
+          console.log('After merge complete');
+        }
+      );
 
-  }
+    }
 
   /**
    * 入力を検証する
@@ -90,6 +92,7 @@ export class TaskListComponent implements OnInit, AfterViewInit {
   }
 
   onDelete(id: number): void {
+    this.taskService.EditId = '';
     this.dataSource.del(id)
   }
 }

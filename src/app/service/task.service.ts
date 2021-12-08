@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TaskListItem } from '../model/task';
 
-import { Observable, Observer, ReplaySubject, Subject, observable } from 'rxjs';
+import { Observable, Observer, ReplaySubject, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 @Injectable({
@@ -27,6 +27,28 @@ export class TaskService {
       { indexName: 'updatedAt', unique: false }
     ]
   }
+
+  /**
+   * 共有のため取得Listと編集対象のIDを保持する
+   *
+   * @memberof TaskService
+   */
+  private _data: TaskListItem[] = [];
+  public get Data(): TaskListItem[] {
+    return this._data;
+  }
+  public set Data(data:TaskListItem[]){
+    this._data = data;
+  }
+
+  private _editId: any;
+  public get EditId(): any {
+    return this._editId;
+  }
+  public set EditId(value: any) {
+    this._editId = value;
+  }
+
   constructor() {
     /**データベースをオープンする */
     const request = indexedDB.open(this.dbSettings.name)
@@ -58,7 +80,7 @@ export class TaskService {
 
 
   /** task取得 */
-  get(id? : any): Observable<any> {
+  get(id?: any): Observable<any> {
     return new Observable((observer: Observer<any>) => {
       try {
         this.db.pipe(
@@ -75,13 +97,16 @@ export class TaskService {
           }
 
           request.onsuccess = (event: any) => {
+            if (!id) {
+              this._data = event.target.result
+            }
             observer.next(event.target.result)
             observer.complete()
           }
 
           request.onerror = (event: any) => observer.error(event.target.error)
         })
-      } catch (error){
+      } catch (error) {
         observer.error(error)
       }
     })
@@ -122,12 +147,12 @@ export class TaskService {
           const objectStore = transaction.objectStore(this.storeSettings.name)
           const request = objectStore.put(task)
 
-        request.onsuccess = (event:any) => {
-          observer.next(event.target.result)
-          observer.complete()
-        }
+          request.onsuccess = (event: any) => {
+            observer.next(event.target.result)
+            observer.complete()
+          }
 
-        request.onerror = (event: any) => observer.error(event.target.error)
+          request.onerror = (event: any) => observer.error(event.target.error)
         })
       } catch (error) {
         observer.error(error)
@@ -161,7 +186,7 @@ export class TaskService {
 
   deleteDB(): Observable<any> {
     return new Observable((observer: Observer<any>) => {
-      try{
+      try {
         this.db.pipe(
           take(1)
         ).subscribe(db => {
@@ -184,5 +209,5 @@ export class TaskService {
 
       }
     })
- }
+  }
 }
