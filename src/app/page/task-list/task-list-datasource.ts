@@ -40,12 +40,13 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
    *
    * @memberof TaskListDataSource
    */
-  load(): void {
+  load(paginator: MatPaginator, sort: MatSort): void {
     // detailからの戻りの場合、編集対象のIDでListを復元する
     if (this.taskServise.EditId) {
       console.log('selectedrow::' + this.taskServise.EditId)
       this.data = this.taskServise.Data
-      this.subject.next(this.data)
+      this.getPage(paginator,sort)
+
       this.taskServise.EditId = ''
       return
     }
@@ -59,7 +60,7 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
       )
       .subscribe(tasks => {
         this.data = tasks
-        this.subject.next(this.data)
+        this.getPage(paginator,sort)
       });
     // .subscribe(tasks => { this.data = tasks });
   }
@@ -80,15 +81,9 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
       (id) => {
         addItem.id = id
         this.data.push(addItem)
-        this.subject.next(this.data)
+        this.getPage(this.paginator,this.sort)
       }
     )
-
-    // this.taskServise.post(addItem).subscribe(id => {
-    //   DEFAUL_LIST.id = id
-    //   this.data.push(DEFAUL_LIST)
-    //   this.subject.next(this.data)
-    // })
   }
 
   /**
@@ -101,7 +96,7 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
     this.taskServise.delete(id).subscribe(
       (v) => {
         this.data = this.data.filter(v => v.id !== id)
-        this.subject.next(this.data)
+        this.getPage(this.paginator,this.sort)
       })
   }
 

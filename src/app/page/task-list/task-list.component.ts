@@ -47,7 +47,6 @@ export class TaskListComponent implements OnInit, AfterViewInit {
     // Before render
     this.dataSource = new TaskListDataSource(this.taskService)
     this.selectedrow = this.taskService.EditId
-    this.dataSource.load()
 }
   /**
    * コンポーネントのビューを完全に初期化した後に呼び出されるライフサイクルフック。
@@ -56,8 +55,10 @@ export class TaskListComponent implements OnInit, AfterViewInit {
    */
   ngAfterViewInit(): void {
 
+    this.dataSource.load(this.paginator, this.sort)
+
     // ソート後にページネーターをリセットする
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0)
 
     // sortChangeとpaginator入力Observableを一つにする
     merge(this.sort.sortChange, this.paginator.page)
@@ -66,7 +67,7 @@ export class TaskListComponent implements OnInit, AfterViewInit {
       )
       .subscribe(
         () => {
-          console.log('After merge complete');
+          console.log('After merge complete')
         }
       );
 
