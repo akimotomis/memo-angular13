@@ -1,11 +1,8 @@
 import { TaskService } from './../../service/task.service';
 import { OnInit, AfterViewInit, Component, ViewChild } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
 import { TaskListDataSource } from './task-list-datasource';
-import { TaskListItem } from 'src/app/model/task';
 import { merge, tap } from 'rxjs';
 
 @Component({
