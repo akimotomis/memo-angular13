@@ -14,6 +14,8 @@ import { TaskListItem } from './../../model/task';
 export class TaskListDataSource implements DataSource<TaskListItem> {
   public data: TaskListItem[] = [];
   private paginator!: MatPaginator;
+  private pageIndex: number = 0;
+  private pageSize: number = 10;
   private sort!: MatSort;
 
   private subject = new BehaviorSubject<TaskListItem[]>([]);
@@ -40,12 +42,15 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
    *
    * @memberof TaskListDataSource
    */
-  load(paginator: MatPaginator, sort: MatSort): void {
+  load(pageIndex: number, pageSize: number): void {
+    this.pageIndex = pageIndex
+    this.pageSize = pageSize
+
     // detailからの戻りの場合、編集対象のIDでListを復元する
     if (this.taskServise.EditId) {
       console.log('selectedrow::' + this.taskServise.EditId)
       this.data = this.taskServise.Data
-      this.getPage(paginator,sort)
+      this.getPage(this.paginator, this.sort)
 
       this.taskServise.EditId = ''
       return
@@ -60,7 +65,7 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
       )
       .subscribe(tasks => {
         this.data = tasks
-        this.getPage(paginator,sort)
+        this.getPage(this.paginator, this.sort)
       });
     // .subscribe(tasks => { this.data = tasks });
   }
@@ -81,7 +86,7 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
       (id) => {
         addItem.id = id
         this.data.push(addItem)
-        this.getPage(this.paginator,this.sort)
+        this.getPage(this.paginator, this.sort)
       }
     )
   }
@@ -96,7 +101,7 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
     this.taskServise.delete(id).subscribe(
       (v) => {
         this.data = this.data.filter(v => v.id !== id)
-        this.getPage(this.paginator,this.sort)
+        this.getPage(this.paginator, this.sort)
       })
   }
 
@@ -113,7 +118,7 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  getPage(paginator: MatPaginator, sort: MatSort): void {
+  public getPage(paginator: MatPaginator, sort: MatSort): void {
     this.paginator = paginator;
     this.sort = sort;
     this.subject.next(this.getPagedData(this.getSortedData([...this.data])));
@@ -125,7 +130,8 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
     } else {
-      return data;
+      const startIndex = this.pageIndex * this.pageSize;
+      return data.splice(startIndex, this.pageSize);
     }
   }
 

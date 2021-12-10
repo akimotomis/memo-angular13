@@ -18,7 +18,9 @@ export class TaskListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator
   @ViewChild(MatSort) sort!: MatSort
   // @ViewChild(MatTable) table!: MatTable<TaskListItem>
-  selectedrow: number = 0
+  public selectedrow: number = 0
+  private pageIndex: number = 0
+  private pageSize: number = 10
 
   statusName: string = 'all'
   statusList = [
@@ -44,15 +46,14 @@ export class TaskListComponent implements OnInit, AfterViewInit {
     // Before render
     this.dataSource = new TaskListDataSource(this.taskService)
     this.selectedrow = this.taskService.EditId
-}
+    this.dataSource.load(this.pageIndex, this.pageSize)
+  }
   /**
    * コンポーネントのビューを完全に初期化した後に呼び出されるライフサイクルフック。
    *
    * @memberof TaskListComponent
    */
   ngAfterViewInit(): void {
-
-    this.dataSource.load(this.paginator, this.sort)
 
     // ソート後にページネーターをリセットする
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0)
@@ -68,7 +69,7 @@ export class TaskListComponent implements OnInit, AfterViewInit {
         }
       );
 
-    }
+  }
 
   /**
    * 入力を検証する
