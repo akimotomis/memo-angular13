@@ -1,6 +1,6 @@
 import { Component, NgZone, OnInit, ViewChild, } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { TaskService } from './../../service/task.service';
@@ -17,16 +17,19 @@ export class TaskDetailComponent implements OnInit {
   // Details Id
   // editId: string | null = ""
 
-  public task = {} as TaskListItem;
+  private task = {} as TaskListItem;
 
   // Details FormGroup
   editForm: FormGroup = this.fb.group({
+    id:[],
+    status:[''],
     title: ['', Validators.required],
-    status: [''],
     content: [''],
-    aliases: this.fb.array([
-      this.fb.control('')
-    ])
+    createdAt:[''],
+    updatedAt:['']
+    // aliases: this.fb.array([
+    //   this.fb.control('')
+    // ])
   });
 
   constructor(
@@ -34,9 +37,7 @@ export class TaskDetailComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private taskService: TaskService,
-    private formBuilder: FormBuilder,
-    private location: Location,
-    private router: Router,) { }
+    private location: Location) { }
 
   @ViewChild('autosize')
   autosize!: CdkTextareaAutosize;
@@ -47,11 +48,13 @@ export class TaskDetailComponent implements OnInit {
 
     this.taskService.get(this.taskService.EditId)
       .subscribe(task => {
-        this.editForm.patchValue({
-          title: task.title,
-          status: task.status,
-          contents: task.contents
-        })
+        this.task = task
+        this.editForm.patchValue(task)
+        // this.editForm.patchValue({
+        //   title: task.title,
+        //   status: task.status,
+        //   contents: task.contents
+        // })
       })
   }
   triggerResize() {
@@ -64,7 +67,15 @@ export class TaskDetailComponent implements OnInit {
     // リストに戻る
     this.location.back();
   }
-  onSave(task: TaskListItem): void {
-    this.taskService.put(task)
+  onSave(task:TaskListItem): void {
+    task.updatedAt = new Date().toLocaleString()
+
+    this.taskService.put(task).subscribe(
+      ()=>{
+        console.log('Observer update complete id='+this.taskService.EditId);
+        // this.taskService.EditId = ''
+        this.goBack()
+      }
+    )
   }
 }

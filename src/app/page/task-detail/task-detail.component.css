@@ -1,28 +1,7 @@
-h2 {
-  font-size: 16px;
-  margin-top: 56px;
-}
-h2 span {
-  font-size: 14px;
-  margin-left: 10px;
-  color: #aaa;
-  font-weight: normal;
-}
-.editor {
-  margin: 56px auto;
-}
-.back {
+.details-container {
   display: flex;
-  margin: 24px 0;
-  text-decoration: none;
-  align-items: center;
+  flex-direction: column;
 }
-.back i {
-  font-size: 40px;
-  margin-right: 10px;
-  color: #f0f0f0;
-}
-.back span {
-  font-size: 14px;
-  color: #bbb;
+.details-container > * {
+  width: 100%;
 }
