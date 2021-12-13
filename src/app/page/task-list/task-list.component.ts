@@ -1,7 +1,7 @@
 import { TaskService } from './../../service/task.service';
 import { OnInit, AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { TaskListDataSource } from './task-list-datasource';
 import { merge, tap } from 'rxjs';
 
@@ -22,6 +22,9 @@ export class TaskListComponent implements OnInit, AfterViewInit {
   public selectedrow: number = this.taskService.SelectedRow
   public pageIndex: number = this.taskService.PageIndex
   public pageSize: number = this.taskService.PageSize
+  public sortState: Sort = this.taskService.SortState
+  // public sortActive:string = this.taskService.SortAactive
+  // public sortDirection:SortDirection = this.taskService.SortDirection
 
   public displayedColumns = ['id', 'title', 'updatedAt', 'createdAt', 'delbtn']
 
@@ -50,8 +53,6 @@ export class TaskListComponent implements OnInit, AfterViewInit {
     if (this.selectedrow) {
       console.log('selectedrow::' + this.taskService.SelectedRow)
       this.taskService.SelectedRow = 0
-      this.pageIndex = this.taskService.PageIndex
-      this.pageSize = this.taskService.PageSize
       this.dataSource.dataLength = this.taskService.Data.length
       this.dataSource.getPage(this.paginator, this.sort)
     } else {
@@ -73,8 +74,14 @@ export class TaskListComponent implements OnInit, AfterViewInit {
       .pipe(tap(
         () => {
           // List復元用のpaginator設定値を退避する
-          this.taskService.PageIndex = this.paginator.pageIndex
-          this.taskService.PageSize = this.paginator.pageSize
+          if (this.sort.active) {
+            this.taskService.SortState.active = this.sort.active
+            this.taskService.SortState.direction = this.sort.direction
+          }
+          if (this.paginator.page) {
+            this.taskService.PageIndex = this.paginator.pageIndex
+            this.taskService.PageSize = this.paginator.pageSize
+          }
 
           this.dataSource.getPage(this.paginator, this.sort)
         })

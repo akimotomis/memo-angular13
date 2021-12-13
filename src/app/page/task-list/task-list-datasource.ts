@@ -128,19 +128,31 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
    */
   private getSortedData(data: TaskListItem[]): TaskListItem[] {
     if (!this.sort || !this.sort.active || this.sort.direction === '') {
-      return data;
-    }
+      // return data;
+      return data.sort((a, b) => {
+        const isAsc = this.taskServise.SortState.direction === 'asc';
+        switch (this.taskServise.SortState.active) {
+          case 'updatedAt': return compare(a.updatedAt, b.updatedAt, isAsc);
+          case 'createdAt': return compare(a.createdAt, b.createdAt, isAsc);
+          case 'title': return compare(a.title, b.title, isAsc);
+          case 'id': return compare(+a.id, +b.id, isAsc);
+          default: return 0;
+        }
+      });
 
-    return data.sort((a, b) => {
-      const isAsc = this.sort?.direction === 'asc';
-      switch (this.sort?.active) {
-        case 'updatedAt': return compare(a.updatedAt, b.updatedAt, isAsc);
-        case 'createdAt': return compare(a.createdAt, b.createdAt, isAsc);
-        case 'title': return compare(a.title, b.title, isAsc);
-        case 'id': return compare(+a.id, +b.id, isAsc);
-        default: return 0;
+    }else{
+      return data.sort((a, b) => {
+        const isAsc = this.sort?.direction === 'asc';
+        switch (this.sort?.active) {
+          case 'updatedAt': return compare(a.updatedAt, b.updatedAt, isAsc);
+          case 'createdAt': return compare(a.createdAt, b.createdAt, isAsc);
+          case 'title': return compare(a.title, b.title, isAsc);
+          case 'id': return compare(+a.id, +b.id, isAsc);
+          default: return 0;
+        }
+      });
       }
-    });
+
   }
 }
 

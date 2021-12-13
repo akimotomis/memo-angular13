@@ -2,12 +2,14 @@
   <mat-spinner></mat-spinner>
 </div>
 <div>
-  <app-task-input (onChange)="validateInput($event)" (onAdd)="onAdd($event)" [isButtonDisabled]="isButtonDisabled">
+  <app-task-input (onChange)="validateInput($event)" (onAdd)="onAdd($event)"
+   [isButtonDisabled]="isButtonDisabled">
   </app-task-input>
 </div>
 
 <div class="mat-elevation-z8">
-  <table mat-table class="full-width-table" [dataSource]="dataSource" matSort aria-label="Elements">
+  <table mat-table class="full-width-table" [dataSource]="dataSource"
+    matSort matSortDisableClear aria-label="Elements">
     <!-- Id Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>

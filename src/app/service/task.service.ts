@@ -3,7 +3,7 @@ import { TaskListItem } from '../model/task';
 
 import { Observable, Observer, ReplaySubject, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { MatPaginator } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
 
 @Injectable({
   providedIn: 'root'
@@ -29,13 +29,15 @@ export class TaskService {
     ]
   }
   /**
-   * 共有のため取得Listと編集対象のIDを保持する
+   * List表示位置復元のための情報（ID等）を共有保持する
    *
    * @memberof TaskService
    */
   public SelectedRow: any = 0
   public PageIndex: number = 0
   public PageSize: number = 10
+  // public SortAactive: string = 'ID'
+  public SortState: Sort = { active: 'ID', direction: 'asc' }
   public Data: TaskListItem[] = []
 
   constructor() {
