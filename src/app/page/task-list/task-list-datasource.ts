@@ -2,8 +2,8 @@ import { TaskService } from './../../service/task.service';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { catchError, finalize, map, tap } from 'rxjs/operators';
-import { Observable, of as observableOf, merge, BehaviorSubject, of } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { TaskListItem } from './../../model/task';
 
 /**
@@ -12,16 +12,14 @@ import { TaskListItem } from './../../model/task';
  * (including sorting, pagination, and filtering).
  */
 export class TaskListDataSource implements DataSource<TaskListItem> {
-  public data: TaskListItem[] = [];
+  // public data: TaskListItem[] = [];
+  public dataLength: number = 0;
   private paginator!: MatPaginator;
-  private pageIndex: number = 0;
-  private pageSize: number = 10;
   private sort!: MatSort;
 
   private subject = new BehaviorSubject<TaskListItem[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
-
 
   constructor(private taskServise: TaskService) {
     // super();
@@ -42,19 +40,7 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
    *
    * @memberof TaskListDataSource
    */
-  load(pageIndex: number, pageSize: number): void {
-    this.pageIndex = pageIndex
-    this.pageSize = pageSize
-
-    // detailからの戻りの場合、編集対象のIDでListを復元する
-    if (this.taskServise.EditId) {
-      console.log('selectedrow::' + this.taskServise.EditId)
-      this.data = this.taskServise.Data
-      this.getPage(this.paginator, this.sort)
-
-      this.taskServise.EditId = ''
-      return
-    }
+  load(): void {
 
     this.loadingSubject.next(true);
 
@@ -64,10 +50,9 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
         finalize(() => this.loadingSubject.next(false))
       )
       .subscribe(tasks => {
-        this.data = tasks
+        this.dataLength = this.taskServise.Data.length
         this.getPage(this.paginator, this.sort)
       });
-    // .subscribe(tasks => { this.data = tasks });
   }
 
   /**
@@ -85,7 +70,9 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
     this.taskServise.post(addItem).subscribe(
       (id) => {
         addItem.id = id
-        this.data.push(addItem)
+        // this.data.push(addItem)
+        this.taskServise.Data.push(addItem)
+        this.dataLength = this.taskServise.Data.length
         this.getPage(this.paginator, this.sort)
       }
     )
@@ -100,7 +87,8 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
   del(id: number): void {
     this.taskServise.delete(id).subscribe(
       (v) => {
-        this.data = this.data.filter(v => v.id !== id)
+        this.taskServise.Data = this.taskServise.Data.filter(v => v.id !== id)
+        this.dataLength = this.taskServise.Data.length
         this.getPage(this.paginator, this.sort)
       })
   }
@@ -121,8 +109,7 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
   public getPage(paginator: MatPaginator, sort: MatSort): void {
     this.paginator = paginator;
     this.sort = sort;
-    this.subject.next(this.getPagedData(this.getSortedData([...this.data])));
-
+    this.subject.next(this.getPagedData(this.getSortedData([...this.taskServise.Data])));
   }
 
   private getPagedData(data: TaskListItem[]): TaskListItem[] {
@@ -130,8 +117,8 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
     } else {
-      const startIndex = this.pageIndex * this.pageSize;
-      return data.splice(startIndex, this.pageSize);
+      const startIndex = this.taskServise.PageIndex * this.taskServise.PageSize;
+      return data.splice(startIndex, this.taskServise.PageSize);
     }
   }
 

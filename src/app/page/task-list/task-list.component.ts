@@ -11,25 +11,28 @@ import { merge, tap } from 'rxjs';
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent implements OnInit, AfterViewInit {
-
-  dataSource!: TaskListDataSource
-  displayedColumns = ['id', 'title', 'updatedAt', 'createdAt', 'delbtn']
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator
-  @ViewChild(MatSort) sort!: MatSort
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
+  @ViewChild(MatSort)
+  sort!: MatSort;
   // @ViewChild(MatTable) table!: MatTable<TaskListItem>
-  public selectedrow: number = 0
-  private pageIndex: number = 0
-  private pageSize: number = 10
 
-  statusName: string = 'all'
-  statusList = [
-    { name: 'all', status: true },
-    { name: 'new', status: false },
-    { name: 'wip', status: false },
-    { name: 'done', status: false },
-    { name: 'pending', status: false }
-  ]
+  // properties
+  public dataSource: TaskListDataSource = new TaskListDataSource(this.taskService)
+  public selectedrow: number = this.taskService.SelectedRow
+  public pageIndex: number = this.taskService.PageIndex
+  public pageSize: number = this.taskService.PageSize
+
+  public displayedColumns = ['id', 'title', 'updatedAt', 'createdAt', 'delbtn']
+
+  // statusName: string = 'all'
+  // statusList = [
+  //   { name: 'all', status: true },
+  //   { name: 'new', status: false },
+  //   { name: 'wip', status: false },
+  //   { name: 'done', status: false },
+  //   { name: 'pending', status: false }
+  // ]
   /**
    * 入力検査結果（ボタン活性/非活性）
    *
@@ -43,10 +46,17 @@ export class TaskListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    // Before render
-    this.dataSource = new TaskListDataSource(this.taskService)
-    this.selectedrow = this.taskService.EditId
-    this.dataSource.load(this.pageIndex, this.pageSize)
+    // detailからの戻りの場合、編集対象のIDでListを復元する
+    if (this.selectedrow) {
+      console.log('selectedrow::' + this.taskService.SelectedRow)
+      this.taskService.SelectedRow = 0
+      this.pageIndex = this.taskService.PageIndex
+      this.pageSize = this.taskService.PageSize
+      this.dataSource.dataLength = this.taskService.Data.length
+      this.dataSource.getPage(this.paginator, this.sort)
+    } else {
+      this.dataSource.load()
+    }
   }
   /**
    * コンポーネントのビューを完全に初期化した後に呼び出されるライフサイクルフック。
@@ -60,14 +70,20 @@ export class TaskListComponent implements OnInit, AfterViewInit {
 
     // sortChangeとpaginator入力Observableを一つにする
     merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        tap(() => this.dataSource.getPage(this.paginator, this.sort))
+      .pipe(tap(
+        () => {
+          // List復元用のpaginator設定値を退避する
+          this.taskService.PageIndex = this.paginator.pageIndex
+          this.taskService.PageSize = this.paginator.pageSize
+
+          this.dataSource.getPage(this.paginator, this.sort)
+        })
       )
       .subscribe(
         () => {
           console.log('After merge complete')
         }
-      );
+      )
 
   }
 
@@ -91,7 +107,7 @@ export class TaskListComponent implements OnInit, AfterViewInit {
   }
 
   onDelete(id: number): void {
-    this.taskService.EditId = '';
+    this.taskService.SelectedRow = '';
     this.dataSource.del(id)
   }
 }

@@ -44,9 +44,9 @@ export class TaskDetailComponent implements OnInit {
 
   ngOnInit() {
     // task get by 'id'(paramMap)
-    this.taskService.EditId = this.route.snapshot.paramMap.get('id');
+    this.taskService.SelectedRow = this.route.snapshot.paramMap.get('id');
 
-    this.taskService.get(this.taskService.EditId)
+    this.taskService.get(this.taskService.SelectedRow)
       .subscribe(task => {
         this.task = task
         this.editForm.patchValue(task)
@@ -72,7 +72,7 @@ export class TaskDetailComponent implements OnInit {
 
     this.taskService.put(task).subscribe(
       ()=>{
-        console.log('Observer update complete id='+this.taskService.EditId);
+        console.log('Observer update complete id='+this.taskService.SelectedRow);
         // this.taskService.EditId = ''
         this.goBack()
       }

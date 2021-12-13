@@ -3,19 +3,20 @@ import { TaskListItem } from '../model/task';
 
 import { Observable, Observer, ReplaySubject, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
   /** InexDBをRxjsでラップする  */
-  db: Subject<IDBDatabase> = new ReplaySubject<IDBDatabase>(1);
+  private db: Subject<IDBDatabase> = new ReplaySubject<IDBDatabase>(1);
 
-  dbSettings = {
+  private dbSettings = {
     name: 'todos-vue',
     version: 1
   }
-  storeSettings = {
+  private storeSettings = {
     name: 'tasks',
     storeOptions: { keyPath: 'id', autoIncrement: true },
     indexes: [
@@ -27,27 +28,15 @@ export class TaskService {
       { indexName: 'updatedAt', unique: false }
     ]
   }
-
   /**
    * 共有のため取得Listと編集対象のIDを保持する
    *
    * @memberof TaskService
    */
-  private _data: TaskListItem[] = [];
-  public get Data(): TaskListItem[] {
-    return this._data;
-  }
-  public set Data(data:TaskListItem[]){
-    this._data = data;
-  }
-
-  private _editId: any;
-  public get EditId(): any {
-    return this._editId;
-  }
-  public set EditId(value: any) {
-    this._editId = value;
-  }
+  public SelectedRow: any = 0
+  public PageIndex: number = 0
+  public PageSize: number = 10
+  public Data: TaskListItem[] = []
 
   constructor() {
     /**データベースをオープンする */
@@ -98,7 +87,7 @@ export class TaskService {
 
           request.onsuccess = (event: any) => {
             if (!id) {
-              this._data = event.target.result
+              this.Data = event.target.result
             }
             observer.next(event.target.result)
             observer.complete()
