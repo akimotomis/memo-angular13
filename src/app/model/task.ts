@@ -6,3 +6,11 @@ export interface TaskListItem {
   createdAt: string;
   updatedAt: string;
 }
+export interface TaskListShare {
+  SelectedRow: any;
+  PageIndex: number;
+  PageSize: number;
+  SortAactive: string;
+  SortDirection: string;
+  Data: TaskListItem[];
+}

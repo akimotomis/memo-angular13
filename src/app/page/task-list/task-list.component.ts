@@ -19,14 +19,10 @@ export class TaskListComponent implements OnInit, AfterViewInit {
 
   // properties
   public dataSource: TaskListDataSource = new TaskListDataSource(this.taskService)
-  public selectedrow: number = this.taskService.SelectedRow
-  public pageIndex: number = this.taskService.PageIndex
-  public pageSize: number = this.taskService.PageSize
-  public sortState: Sort = this.taskService.SortState
-  // public sortActive:string = this.taskService.SortAactive
-  // public sortDirection:SortDirection = this.taskService.SortDirection
-
   public displayedColumns = ['id', 'title', 'updatedAt', 'createdAt', 'delbtn']
+  public selectedrow: number = this.taskService.Share.SelectedRow
+  public pageIndex: number = this.taskService.Share.PageIndex
+  public pageSize: number = this.taskService.Share.PageSize
 
   // statusName: string = 'all'
   // statusList = [
@@ -42,7 +38,7 @@ export class TaskListComponent implements OnInit, AfterViewInit {
    * @type {boolean}
    * @memberof TaskListComponent
    */
-  isButtonDisabled: boolean = true
+  public isButtonDisabled: boolean = true
 
   constructor(
     private taskService: TaskService) {
@@ -51,10 +47,10 @@ export class TaskListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     // detailからの戻りの場合、編集対象のIDでListを復元する
     if (this.selectedrow) {
-      console.log('selectedrow::' + this.taskService.SelectedRow)
-      this.taskService.SelectedRow = 0
-      this.dataSource.dataLength = this.taskService.Data.length
-      this.dataSource.getPage(this.paginator, this.sort)
+      console.log('selectedrow::' + this.taskService.Share.SelectedRow)
+      this.taskService.Share.SelectedRow = ''
+      this.dataSource.dataLength = this.taskService.Share.Data.length
+      this.dataSource.getPage()
     } else {
       this.dataSource.load()
     }
@@ -75,20 +71,20 @@ export class TaskListComponent implements OnInit, AfterViewInit {
         () => {
           // List復元用のpaginator設定値を退避する
           if (this.sort.active) {
-            this.taskService.SortState.active = this.sort.active
-            this.taskService.SortState.direction = this.sort.direction
+            this.taskService.Share.SortAactive = this.sort.active
+            this.taskService.Share.SortDirection = this.sort.direction
           }
           if (this.paginator.page) {
-            this.taskService.PageIndex = this.paginator.pageIndex
-            this.taskService.PageSize = this.paginator.pageSize
+            this.taskService.Share.PageIndex = this.paginator.pageIndex
+            this.taskService.Share.PageSize = this.paginator.pageSize
           }
 
-          this.dataSource.getPage(this.paginator, this.sort)
+          this.dataSource.getPage()
         })
       )
       .subscribe(
         () => {
-          console.log('After merge complete')
+          console.log('ngAfterViewInit merge complete')
         }
       )
 
@@ -114,7 +110,7 @@ export class TaskListComponent implements OnInit, AfterViewInit {
   }
 
   onDelete(id: number): void {
-    this.taskService.SelectedRow = '';
+    this.taskService.Share.SelectedRow = '';
     this.dataSource.del(id)
   }
 }

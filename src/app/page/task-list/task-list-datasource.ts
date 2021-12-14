@@ -50,8 +50,8 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
         finalize(() => this.loadingSubject.next(false))
       )
       .subscribe(tasks => {
-        this.dataLength = this.taskServise.Data.length
-        this.getPage(this.paginator, this.sort)
+        this.dataLength = this.taskServise.Share.Data.length
+        this.getPage()
       });
   }
 
@@ -71,9 +71,9 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
       (id) => {
         addItem.id = id
         // this.data.push(addItem)
-        this.taskServise.Data.push(addItem)
-        this.dataLength = this.taskServise.Data.length
-        this.getPage(this.paginator, this.sort)
+        this.taskServise.Share.Data.push(addItem)
+        this.dataLength = this.taskServise.Share.Data.length
+        this.getPage()
       }
     )
   }
@@ -87,9 +87,9 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
   del(id: number): void {
     this.taskServise.delete(id).subscribe(
       (v) => {
-        this.taskServise.Data = this.taskServise.Data.filter(v => v.id !== id)
-        this.dataLength = this.taskServise.Data.length
-        this.getPage(this.paginator, this.sort)
+        this.taskServise.Share.Data = this.taskServise.Share.Data.filter(v => v.id !== id)
+        this.dataLength = this.taskServise.Share.Data.length
+        this.getPage()
       })
   }
 
@@ -106,54 +106,68 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  public getPage(paginator: MatPaginator, sort: MatSort): void {
-    this.paginator = paginator;
-    this.sort = sort;
-    this.subject.next(this.getPagedData(this.getSortedData([...this.taskServise.Data])));
+  public getPage(): void {
+    this.subject.next(this.getPagedData(this.getSortedData([...this.taskServise.Share.Data])));
   }
 
   private getPagedData(data: TaskListItem[]): TaskListItem[] {
-    if (this.paginator) {
-      const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-      return data.splice(startIndex, this.paginator.pageSize);
-    } else {
-      const startIndex = this.taskServise.PageIndex * this.taskServise.PageSize;
-      return data.splice(startIndex, this.taskServise.PageSize);
-    }
+    const startIndex = this.taskServise.Share.PageIndex * this.taskServise.Share.PageSize;
+    return data.splice(startIndex, this.taskServise.Share.PageSize);
   }
+  //  if (this.paginator) {
+  //       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+  //       return data.splice(startIndex, this.paginator.pageSize);
+  //     } else {
+  //       const startIndex = this.taskServise.Share.PageIndex * this.taskServise.Share.PageSize;
+  //       return data.splice(startIndex, this.taskServise.Share.PageSize);
+  //     }
+  //   }
 
   /**
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
   private getSortedData(data: TaskListItem[]): TaskListItem[] {
-    if (!this.sort || !this.sort.active || this.sort.direction === '') {
-      // return data;
-      return data.sort((a, b) => {
-        const isAsc = this.taskServise.SortState.direction === 'asc';
-        switch (this.taskServise.SortState.active) {
-          case 'updatedAt': return compare(a.updatedAt, b.updatedAt, isAsc);
-          case 'createdAt': return compare(a.createdAt, b.createdAt, isAsc);
-          case 'title': return compare(a.title, b.title, isAsc);
-          case 'id': return compare(+a.id, +b.id, isAsc);
-          default: return 0;
-        }
-      });
-
-    }else{
-      return data.sort((a, b) => {
-        const isAsc = this.sort?.direction === 'asc';
-        switch (this.sort?.active) {
-          case 'updatedAt': return compare(a.updatedAt, b.updatedAt, isAsc);
-          case 'createdAt': return compare(a.createdAt, b.createdAt, isAsc);
-          case 'title': return compare(a.title, b.title, isAsc);
-          case 'id': return compare(+a.id, +b.id, isAsc);
-          default: return 0;
-        }
-      });
+    // return data;
+    return data.sort((a, b) => {
+      const isAsc = this.taskServise.Share.SortDirection === 'asc';
+      switch (this.taskServise.Share.SortAactive) {
+        case 'updatedAt': return compare(a.updatedAt, b.updatedAt, isAsc);
+        case 'createdAt': return compare(a.createdAt, b.createdAt, isAsc);
+        case 'title': return compare(a.title, b.title, isAsc);
+        case 'id': return compare(+a.id, +b.id, isAsc);
+        default: return 0;
       }
-
+    });
   }
+
+  // if (!this.sort || !this.sort.active || this.sort.direction === '') {
+  //   // return data;
+  //   return data.sort((a, b) => {
+  //     const isAsc = this.taskServise.Share.SortDirection === 'asc';
+  //     switch (this.taskServise.Share.SortAactive) {
+  //       case 'updatedAt': return compare(a.updatedAt, b.updatedAt, isAsc);
+  //       case 'createdAt': return compare(a.createdAt, b.createdAt, isAsc);
+  //       case 'title': return compare(a.title, b.title, isAsc);
+  //       case 'id': return compare(+a.id, +b.id, isAsc);
+  //       default: return 0;
+  //     }
+  //   });
+
+  // }
+  // else {
+  //   return data.sort((a, b) => {
+  //     const isAsc = this.sort?.direction === 'asc';
+  //     switch (this.sort?.active) {
+  //       case 'updatedAt': return compare(a.updatedAt, b.updatedAt, isAsc);
+  //       case 'createdAt': return compare(a.createdAt, b.createdAt, isAsc);
+  //       case 'title': return compare(a.title, b.title, isAsc);
+  //       case 'id': return compare(+a.id, +b.id, isAsc);
+  //       default: return 0;
+  //     }
+  //   });
+  // }
+
 }
 
 /** Simple sort comparator for example ID/Name columns (for client-side sorting). */

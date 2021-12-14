@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TaskListItem } from '../model/task';
+import { TaskListItem, TaskListShare } from '../model/task';
 
 import { Observable, Observer, ReplaySubject, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -33,12 +33,19 @@ export class TaskService {
    *
    * @memberof TaskService
    */
-  public SelectedRow: any = 0
-  public PageIndex: number = 0
-  public PageSize: number = 10
-  // public SortAactive: string = 'ID'
-  public SortState: Sort = { active: 'ID', direction: 'asc' }
-  public Data: TaskListItem[] = []
+  // public SelectedRow: any = 0
+  // public PageIndex: number = 0
+  // public PageSize: number = 10
+  // public SortState: Sort = { active: 'ID', direction: 'asc' }
+  // public Data: TaskListItem[] = []
+  public Share: TaskListShare = {
+    SelectedRow: 0,
+    PageIndex: 0,
+    PageSize: 10,
+    SortAactive: 'id',
+    SortDirection: 'asc',
+    Data: [] = []
+  }
 
   constructor() {
     /**データベースをオープンする */
@@ -89,7 +96,7 @@ export class TaskService {
 
           request.onsuccess = (event: any) => {
             if (!id) {
-              this.Data = event.target.result
+              this.Share.Data = event.target.result
             }
             observer.next(event.target.result)
             observer.complete()
