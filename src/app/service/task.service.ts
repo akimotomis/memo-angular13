@@ -188,17 +188,18 @@ export class TaskService {
         this.db.pipe(
           take(1)
         ).subscribe(db => {
-          const request = indexedDB.deleteDatabase(this.dbSettings.name)
           db.close()
+          const request = indexedDB.deleteDatabase(this.dbSettings.name)
 
           request.onsuccess = (event) => {
-            document.location.reload()
+            console.log("Database delete onsuccess");
             observer.next(event.type)
             observer.complete()
           }
 
           request.onblocked = () => {
-            alert('errror! 複数タブでは実行できません。 タブを閉じてください')
+            console.log("Database delete onblocked");
+            // alert('errror! 複数タブでは実行できません。 タブを閉じてください')
           }
 
           request.onerror = (event: any) => observer.error(event.target.error)

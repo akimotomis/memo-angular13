@@ -1,5 +1,6 @@
 import { TaskService } from './../../service/task.service';
 import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menusetting',
@@ -8,7 +9,9 @@ import { Component, EventEmitter, OnInit } from '@angular/core';
 })
 export class MenusettingComponent implements OnInit {
 
-  constructor(private taskServise: TaskService) { }
+  constructor(
+    private router: Router,
+    private taskServise: TaskService) { }
 
   ngOnInit() {
   }
@@ -18,7 +21,12 @@ export class MenusettingComponent implements OnInit {
    *
    * @memberof TaskListDataSource
    */
-   onResetButtonClick(): void {
-    this.taskServise.deleteDB().subscribe()
+  onResetButtonClick(): void {
+    this.taskServise.deleteDB().subscribe(
+      () => {
+        document.location.reload()
+        // this.router.navigate(['']);
+      }
+    )
   }
 }
