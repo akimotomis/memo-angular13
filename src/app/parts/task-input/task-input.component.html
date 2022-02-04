@@ -4,7 +4,7 @@
   </mat-label>
   <input matInput [ngModel]="inText"
   (ngModelChange)="onNgModelChange($event); inText = $event"
-  (keyup)="onKeyUp($event)" #inputText>
+  (keyup)="onKeyUp($event)">
   <button mat-raised-button color="accent" matSuffix
   [disabled]="isButtonDisabled"
   (click)="onButtonClick()">追加</button>
