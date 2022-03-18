@@ -2,7 +2,7 @@
   <mat-spinner></mat-spinner>
 </div>
 <div>
-  <app-task-input (onChange)="validateInput($event)" (onAdd)="onAdd($event)"
+  <app-task-input (inputChange)="validateInput($event)" (inputAdd)="inputAdd($event)"
    [isButtonDisabled]="isButtonDisabled">
   </app-task-input>
 </div>
@@ -51,8 +51,8 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row">
     </tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [id]="row.id"
-      [ngClass]="{'element-row': selectedrow != row.id, 'selectedrow':selectedrow == row.id}">
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"
+      [class.element-row]="row.id !== selectedrow" [class.select-row]="row.id === selectedrow">
     </tr>
   </table>
 

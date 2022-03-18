@@ -10,6 +10,7 @@ export class MenutoolbarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log("MenutoolbarComponent Init");
   }
 
 }

@@ -14,6 +14,7 @@ export class MenusettingComponent implements OnInit {
     private taskServise: TaskService) { }
 
   ngOnInit() {
+    console.log("MenusettingComponent Init");
   }
 
   /**

@@ -10,6 +10,7 @@ export class MenupageComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log("MenupageComponent Init");
   }
 
 }

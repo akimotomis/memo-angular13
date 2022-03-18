@@ -104,7 +104,7 @@ export class TaskListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onAdd(inText: string): void {
+  inputAdd(inText: string): void {
     this.isButtonDisabled = true
     this.dataSource.add(inText)
   }

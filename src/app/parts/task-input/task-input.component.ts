@@ -20,12 +20,13 @@ export class TaskInputComponent implements OnInit {
    * @memberof TaskInputComponent
    */
   @Input() isButtonDisabled: boolean = true;
-  @Output() onAdd: EventEmitter<string> = new EventEmitter<string>();
-  @Output() onChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() inputAdd: EventEmitter<string> = new EventEmitter<string>();
+  @Output() inputChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit() {
+    console.log("TaskInputComponent Init");
   }
 
   /**
@@ -35,7 +36,7 @@ export class TaskInputComponent implements OnInit {
    * @memberof TaskInputComponent
    */
   onNgModelChange(inText: string): void {
-    this.onChange.emit(inText)
+    this.inputChange.emit(inText)
   }
 
   /**
@@ -57,7 +58,7 @@ export class TaskInputComponent implements OnInit {
    * @memberof TaskInputComponent
    */
   onButtonClick(): void {
-    this.onAdd.emit(this.inText)
+    this.inputAdd.emit(this.inText)
     this.inText = ''
   }
 
