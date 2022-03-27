@@ -46,14 +46,22 @@ export class TaskListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // detailからの戻りの場合、編集対象のIDでListを復元する
-    if (this.selectedrow) {
-      console.log('selectedrow::' + this.taskService.Share.SelectedRow)
-      this.taskService.Share.SelectedRow = ''
-      this.dataSource.dataLength = this.taskService.Share.Data.length
-      this.dataSource.getPage()
+    this.selectedrow = parseInt(this.taskService.Share.SelectedRow, 10);
+    if (this.taskService.Share.Data.length) {
+      console.log('selectedrow::' + this.selectedrow);
+      this.dataSource.dataLength = this.taskService.Share.Data.length;
+      this.dataSource.getPage();
     } else {
-      this.dataSource.load()
+      this.dataSource.load();
     }
+  //  if (this.selectedrow) {
+  //     console.log('selectedrow::' + this.taskService.Share.SelectedRow)
+  //     this.taskService.Share.SelectedRow = ''
+  //     this.dataSource.dataLength = this.taskService.Share.Data.length
+  //     this.dataSource.getPage()
+  //   } else {
+  //     this.dataSource.load()
+  //   }
   }
   /**
    * コンポーネントのビューを完全に初期化した後に呼び出されるライフサイクルフック。
@@ -61,6 +69,8 @@ export class TaskListComponent implements OnInit, AfterViewInit {
    * @memberof TaskListComponent
    */
   ngAfterViewInit(): void {
+    // 選択行をリセットする
+    this.taskService.Share.SelectedRow = 0;
 
     // ソート後にページネーターをリセットする
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0)

@@ -3,7 +3,6 @@ import { TaskListItem, TaskListShare } from '../model/task';
 
 import { Observable, Observer, ReplaySubject, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { Sort } from '@angular/material/sort';
 
 @Injectable({
   providedIn: 'root'
@@ -33,11 +32,6 @@ export class TaskService {
    *
    * @memberof TaskService
    */
-  // public SelectedRow: any = 0
-  // public PageIndex: number = 0
-  // public PageSize: number = 10
-  // public SortState: Sort = { active: 'ID', direction: 'asc' }
-  // public Data: TaskListItem[] = []
   public Share: TaskListShare = {
     SelectedRow: 0,
     PageIndex: 0,

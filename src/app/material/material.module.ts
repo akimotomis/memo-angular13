@@ -7,6 +7,13 @@ import { MatIconModule } from '@angular/material/icon'; // アイコン用
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { LayoutModule } from '@angular/cdk/layout';
+
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 const material = [
   MatButtonModule,
@@ -16,7 +23,13 @@ const material = [
   MatIconModule,
   MatDividerModule,
   MatInputModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatGridListModule,
+  MatCardModule,
+  LayoutModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule
 ];
 
 @NgModule({
