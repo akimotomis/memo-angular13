@@ -1,3 +1,7 @@
+<ng-container *ngIf="showScroll$ | async">
+  <app-scroll (scrollToTop)="onScrollToTop()"></app-scroll>
+</ng-container>
+
 <div class="spinner-container" *ngIf="dataSource.loading$ | async">
   <mat-spinner></mat-spinner>
 </div>
@@ -49,7 +53,7 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row">
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="header-row">
     </tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"
       [class.element-row]="row.id !== selectedrow" [class.select-row]="row.id === selectedrow">
@@ -57,7 +61,7 @@
   </table>
 
   <mat-paginator #paginator [length]="dataSource?.dataLength" [pageIndex]="pageIndex" [pageSize]="pageSize"
-    [pageSizeOptions]="[5, 10, 20]" aria-label="Select page">
+    [pageSizeOptions]="pageSizeOptions" aria-label="Select page">
   </mat-paginator>
 
 </div>

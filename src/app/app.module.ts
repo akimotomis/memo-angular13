@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './material/material.module';
 
+import { ScrollComponent } from './parts/scroll/scroll.component';
 import { MenutoolbarComponent } from './parts/menutoolbar/menutoolbar.component';
 import { MenupageComponent } from './parts/menupagelink/menupage.component';
 import { MenusettingComponent } from './parts/menusetting/menusetting.component';
@@ -20,6 +21,7 @@ import { MemoListComponent } from './page/memo-list/memo-list.component';
 @NgModule({
   declarations: [
     AppComponent,
+    ScrollComponent,
     DashboardComponent,
     MenutoolbarComponent,
     MenupageComponent,

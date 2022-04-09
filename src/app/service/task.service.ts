@@ -12,21 +12,24 @@ export class TaskService {
   private db: Subject<IDBDatabase> = new ReplaySubject<IDBDatabase>(1);
 
   private dbSettings = {
-    name: 'todos-vue',
-    version: 1
-  }
+    name: 'task',
+    version: 1,
+  };
   private storeSettings = {
     name: 'tasks',
     storeOptions: { keyPath: 'id', autoIncrement: true },
     indexes: [
       // { indexName: 'comment', unique: false },
+      { indexName: 'category', unique: false },
       { indexName: 'status', unique: false },
       { indexName: 'title', unique: false },
       { indexName: 'content', unique: false },
+      { indexName: 'accessCount', unique: false },
+      { indexName: 'updateCount', unique: false },
       { indexName: 'createdAt', unique: false },
-      { indexName: 'updatedAt', unique: false }
-    ]
-  }
+      { indexName: 'updatedAt', unique: false },
+    ],
+  };
   /**
    * List表示位置復元のための情報（ID等）を共有保持する
    *
@@ -35,11 +38,12 @@ export class TaskService {
   public Share: TaskListShare = {
     SelectedRow: 0,
     PageIndex: 0,
-    PageSize: 10,
-    SortAactive: 'id',
-    SortDirection: 'asc',
-    Data: [] = []
-  }
+    PageSize: 500,
+    pageSizeOptions: [10, 50, 200],
+    SortActive: 'updatedAt',
+    SortDirection: 'desc',
+    Data: ([] = []),
+  };
 
   constructor() {
     /**データベースをオープンする */

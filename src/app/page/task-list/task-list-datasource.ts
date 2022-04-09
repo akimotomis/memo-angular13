@@ -131,7 +131,7 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
     // return data;
     return data.sort((a, b) => {
       const isAsc = this.taskServise.Share.SortDirection === 'asc';
-      switch (this.taskServise.Share.SortAactive) {
+      switch (this.taskServise.Share.SortActive) {
         case 'updatedAt': return compare(a.updatedAt, b.updatedAt, isAsc);
         case 'createdAt': return compare(a.createdAt, b.createdAt, isAsc);
         case 'title': return compare(a.title, b.title, isAsc);
@@ -145,7 +145,7 @@ export class TaskListDataSource implements DataSource<TaskListItem> {
   //   // return data;
   //   return data.sort((a, b) => {
   //     const isAsc = this.taskServise.Share.SortDirection === 'asc';
-  //     switch (this.taskServise.Share.SortAactive) {
+  //     switch (this.taskServise.Share.SortActive) {
   //       case 'updatedAt': return compare(a.updatedAt, b.updatedAt, isAsc);
   //       case 'createdAt': return compare(a.createdAt, b.createdAt, isAsc);
   //       case 'title': return compare(a.title, b.title, isAsc);
