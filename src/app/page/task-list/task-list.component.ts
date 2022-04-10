@@ -20,7 +20,7 @@ export class TaskListComponent implements OnInit, AfterViewInit {
 
   // properties
   public dataSource: TaskListDataSource = new TaskListDataSource(this.taskService)
-  public displayedColumns = ['id', 'title', 'updatedAt', 'createdAt', 'delbtn']
+  public displayedColumns = ['No', 'title', 'updatedAt', 'createdAt', 'delbtn']
   public selectedrow: number = this.taskService.Share.SelectedRow
   public pageIndex: number = this.taskService.Share.PageIndex
   public pageSize: number = this.taskService.Share.PageSize
